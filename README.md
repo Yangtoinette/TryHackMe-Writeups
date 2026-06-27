@@ -40,3 +40,13 @@ Tous les writeups que j'ai pu faire sur THM sont regroupés ici.
 
 ---
 
+Informations complémentaires
+
+Ce dépôt peut également contenir des fichiers d'accompagnement pertinents pour chaque salle, tels que des scripts d'exploitation, des exemples de journaux et des résultats d'analyse. Ceux-ci se trouvent dans les répertoires respectifs des salles.
+
+Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez toujours les principes du piratage éthique ainsi que les conditions générales de la plateforme TryHackMe.
+Contribuer
+
+Les contributions sont les bienvenues. Pour ajouter un guide ou améliorer un guide existant, suivez le workflow standard de GitHub : créez une branche du dépôt, apportez vos modifications, puis soumettez une pull request...
+
+---
