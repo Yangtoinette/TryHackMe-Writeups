@@ -53,3 +53,6 @@ Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez
 Les contributions sont les bienvenues. Pour ajouter un guide ou améliorer un guide existant, suivez le workflow standard de GitHub : créez une branche du dépôt, apportez vos modifications, puis soumettez une pull request...
 
 ---
+
+<!-- WRITEUPS:START -->
+<!-- WRITEUPS:END -->
