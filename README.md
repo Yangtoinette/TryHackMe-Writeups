@@ -55,4 +55,8 @@ Les contributions sont les bienvenues. Pour ajouter un guide ou améliorer un gu
 ---
 
 <!-- WRITEUPS:START -->
+<!-- Dernière mise à jour : 30/06/2026 19:55 UTC -->
+
+_Aucun write-up pour le moment._
+
 <!-- WRITEUPS:END -->
