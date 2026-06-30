@@ -34,7 +34,7 @@
 
 ---
 
-# TryHackMe-Walkthroughs & Writeups
+# TryHackMe Writeups
 
 All writeups for the rooms I've completed will be there (hopefully ?).
 All the rooms will not have a writeup, because I started this repository way after completing my first THM room.

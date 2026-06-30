@@ -1,0 +1,25 @@
+name: Mise à jour de l'index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "writeups/**"
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python3 scripts/generate_readme.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet && echo "Rien à committer" || \
+            (git commit -m "docs: mise à jour de l'index [skip ci]" && git push)
