@@ -55,8 +55,10 @@ Les contributions sont les bienvenues. Pour ajouter un guide ou améliorer un gu
 ---
 
 <!-- WRITEUPS:START -->
-<!-- Dernière mise à jour : 30/06/2026 19:55 UTC -->
+<!-- Dernière mise à jour : 02/07/2026 13:15 UTC -->
 
-_Aucun write-up pour le moment._
+| Challenge | Plateforme | Catégorie | Difficulté | Date | Points |
+|:----------|:-----------|:----------|:-----------|:-----|-------:|
+| [Cache me outside](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cache-me-outside.html) | TryHackMe | OSINT | Easy | 06 2026 | non |
 
 <!-- WRITEUPS:END -->
