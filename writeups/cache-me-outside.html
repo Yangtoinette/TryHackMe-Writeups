@@ -116,15 +116,15 @@ META-->
 
     <div class="section">
       <div class="section-label"># énoncé</div>
-      <div class="enonce">"Years after walking away from the scene, a retired hacker has left pieces of his identity scattered across the open internet.
+      <div class="enonce">"<p>Years after walking away from the scene, a retired hacker has left pieces of his identity scattered across the open internet.</p>
 
-At first glance, it looks like nothing more than a leaked conversation screenshot. But buried in that image is the first thread of a much larger trail. Public profiles, forgotten details, and small mistakes begin to connect into something more deliberate.
+<p>At first glance, it looks like nothing more than a leaked conversation screenshot. But buried in that image is the first thread of a much larger trail. Public profiles, forgotten details, and small mistakes begin to connect into something more deliberate.</p>
 
-Someone wanted this person found.
+<p>Someone wanted this person found.</p>
 
-You are an OSINT investigator tasked with identifying the retired hacker and tracing the clues he left behind.
+<p>You are an OSINT investigator tasked with identifying the retired hacker and tracing the clues he left behind.</p>
 
-Start with the conversation screenshot, follow his online presence, connect the exposed details, and use the final evidence to determine where the trail ends."</div>
+<p>Start with the conversation screenshot, follow his online presence, connect the exposed details, and use the final evidence to determine where the trail ends.</p>"</div>
     </div>
 
     <div class="section">
@@ -146,8 +146,8 @@ Start with the conversation screenshot, follow his online presence, connect the 
             <span class="step-title">What is the retired hacker’s full name?</span>
           </div>
           <div class="step-body">
-            Dans la photo, on peut voir qu'une des deux personnes parle d'un profil utilisateur sur le site komoot.com. 
-            Une simple navigation sur la page nous permets de trouver la première réponse de ce challenge.
+            <p>Dans la photo, on peut voir qu'une des deux personnes parle d'un profil utilisateur sur le site komoot.com. </p>
+            <p>Une simple navigation sur la page nous permets de trouver la première réponse de ce challenge.</p>
             <!-- <div class="codeblock">[commande ou sortie outil]</div> -->
             <div class="result">J** L**</div>
           </div>
@@ -159,11 +159,12 @@ Start with the conversation screenshot, follow his online presence, connect the 
             <span class="step-title">What email address did he accidentally expose?</span>
           </div>
           <div class="step-body">
-            Nous pouvons voir que sur son profil komoot, un lien de son dépôt github est présent. En le parcourant, on peut voir que le seul fichier présent est le readme.md. 
-            Aucune information intéressante à l'heure actuelle. Recherche dans l'historique de commit au cas où : RAS.
+            <p>Nous pouvons voir que sur son profil komoot, un lien de son dépôt github est présent. 
+            <br/>En le parcourant, on peut voir que le seul fichier présent est le readme.md. 
+            Aucune information intéressante à l'heure actuelle. Recherche dans l'historique de commit au cas où : RAS.</p>
 
-            D'après ce tutoriel : https://alb3rtobr.github.io/posts/how-to-generate-a-patch-from-a-pull-request-in-github/, nous pouvons avoir plus d'informations sur un commit en ajoutant ".patch" à la fin de l'url (surtout utilisé pour voir les données de configuration).
-            Cela nous permet de trouver la réponse à la deuxième question.
+            <p>D'après ce tutoriel : https://alb3rtobr.github.io/posts/how-to-generate-a-patch-from-a-pull-request-in-github/, nous pouvons avoir plus d'informations sur un commit en ajoutant ".patch" à la fin de l'url (surtout utilisé pour voir les données de configuration).</p>
+            <p>Cela nous permet de trouver la réponse à la deuxième question.</p>
             <div class="result">j*******@*****.c**</div>
           </div>
         </div>
@@ -174,8 +175,9 @@ Start with the conversation screenshot, follow his online presence, connect the 
             <span class="step-title">What is his phone number?</span>
           </div>
           <div class="step-body">
-            Dans un challenge comme celui-ci, les méthodes les plus simples sont parfois les meilleures. Nous avons trouvé l'adresse mail de la personne, nous pouvons lui envoyer un mail. (Dans une situation réelle, cela n'est pas conseillé).
-            La réponse automatique nous fournit le numéro de téléphone.
+            <p>Dans un challenge comme celui-ci, les méthodes les plus simples sont parfois les meilleures. 
+            <br/>Nous avons trouvé l'adresse mail de la personne, nous pouvons lui envoyer un mail. (Dans une situation réelle, cela n'est pas conseillé).</p>
+            <p>La réponse automatique nous fournit le numéro de téléphone.</p>
             <div class="result">+4X XXX XXX XXX</div>
           </div>
         </div>
@@ -185,15 +187,16 @@ Start with the conversation screenshot, follow his online presence, connect the 
             <span class="step-title">In which city is he located?</span>
           </div>
           <div class="step-body">
-            Sans autre informations particulières, nous pouvons revenir sur les informations que nous possédons : un numéro de téléphone, un pseudo de réseau social.
+            <p>Sans autre informations particulières, nous pouvons revenir sur les informations que nous possédons : un numéro de téléphone, un pseudo de réseau social.</p>
             
-            L'indicatif téléphonique nous indique un pays en particulier : la R*******.
-            Cela restreint déjà les recherches à effectuer. 
+            <p>L'indicatif téléphonique nous indique un pays en particulier : la R*******.
+            Cela restreint déjà les recherches à effectuer. </p>
 
-            En cherchant le pseudo "jiml33t" sur les réseaux sociaux, nous tombons sur un profil Threads qui semble correspondre à la personne recherchée.
+            <p>En cherchant le pseudo "jiml33t" sur les réseaux sociaux, nous tombons sur un profil Threads qui semble correspondre à la personne recherchée.</p>
 
-            Dans une photo, on peut voir un magasin du nom de "irigatii.ro".
-            Une simple recherche Google permet de trouver son adresse, et la ville de Roumanie où est située le magasin.
+            <p>Dans une photo, on peut voir un magasin du nom de "irigatii.ro".</p>
+            <p>Une simple recherche Google permet de trouver son adresse, et la ville de Roumanie où est située le magasin.</p>
+            
             <div class="result">T******</div>
           </div>
         </div>
@@ -203,10 +206,9 @@ Start with the conversation screenshot, follow his online presence, connect the 
             <span class="step-title">Submit the name of the tram station where he got off on the 7th of May, 2026.</span>
           </div>
           <div class="step-body">
-            En cherchant des réponses pour la question précédente, nous avons pu voir que la photo trouvée a aussi une légende : et il y est question d'un supermarché français.
-
-            En cherchant aux alentours du magasin sur Google maps, on peut repérer rapidement un Auchan à quelques mètres. 
-            L'arrêt de bus juste devant est la réponse à la dernière question.
+            <p>En cherchant des réponses pour la question précédente, nous avons pu voir que la photo trouvée a aussi une légende : et il y est question d'un supermarché français.</p>
+            <p>En cherchant aux alentours du magasin sur Google maps, on peut repérer rapidement un Auchan à quelques mètres. 
+            L'arrêt de bus juste devant est la réponse à la dernière question.</p>
             <div class="result">P**** G******* D*******u</div>
           </div>
         </div>
