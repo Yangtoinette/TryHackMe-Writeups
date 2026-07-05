@@ -145,7 +145,9 @@ META-->
             Deux ports sont ouverts : 80 et 22, donc SSH et HTTP.<br>
             La connexion SSH est possible avec une clé publique.
             <br><br>
-            <div class="result">RAS</div>
+            On teste Gobuster, sans résultats particuliers.
+            <div class="codeblock">gobuster dir -u http://10.128.165.86 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</div>
+            <div class="result">RAS de ce côté.</div>
           </div>
         </div>
 
@@ -155,17 +157,21 @@ META-->
             <span class="step-title">Visualiser le site sur le port 80.</span>
           </div>
           <div class="step-body">
-            On teste les outils Gobuster et Nikto, sans résultats particuliers.
-            <div class="codeblock"></div>
-            <div class="codeblock"></div>
-            <br><br>
-            On se concentre plus sur le site affiché sur le port 80.<br>
+            On se concentre sur le site affiché sur le port 80.<br>
             On découvre une partie d'échecs en cours.<br>
-            Si on met le roi noir en échecs et mat, une popup apparait 
+            Si on met le roi noir en échecs et mat (déplacer la tour de a1 à a8), une popup apparait avec un message : "I'll shut down your PC if you play that."<br>
+            Visiblement, il faut effectuer le déplacement interdit pour trouver le flag.
             <br><br>
-            Dans le source code, on voit le fichier js. <br>
-            On voit dans la logique, que le flag est affiché sous certaines conditions.<br>
-            Il faut réécrire la fonction reset pour que le flog et la balise qui l'affiche soient présents dans le html.
+            En explorant le code, on voit le fichier /js/app.js où est regroupé la logique : le flag est affiché sous certaines conditions.
+            <br><br>
+            Au lieu de se lancer dans une compréhension du code, on peut essayer de jouer les requêtes qui permettent de faire le coup interdit.
+            <br><br>
+            On ouvre les "Developers tools" et on essaye de jouer un coup "classique" (de f2 à f3 pour le pion blanc par exemple).<br>
+            Nous pouvons voir que l'appel est fait à /api/move, avec des paramètres JSON "from:f2" "to:f3".
+            <br><br>
+            En curl, on peut envoyer cette commande : 
+            <div class="codeblock">curl -X POST http://<MACHINE_IP>/api/move -H "Content-Type: application/json" --data '{"from":"a1","to":"a8"}'</div>
+            Le flag apparait directement dans la réponse.
             <div class="result">la solution est dans le code source du site</div>
           </div>
         </div>
@@ -179,7 +185,7 @@ META-->
       <div class="section-label"># flag</div>
       <div class="flag-box">
         <div class="flag-label">flag validé</div>
-        <div class="flag-value">THM{valeur_du_flag}</div>
+        <div class="flag-value">THM{***_***_***}</div>
       </div>
     </div>
 
