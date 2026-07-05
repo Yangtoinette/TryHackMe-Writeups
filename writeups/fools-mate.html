@@ -105,7 +105,7 @@ META-->
 <div class="window">
   <div class="titlebar">
     <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-    <span class="titlebar-name">writeup — Fools mate — TryHackMe</span>
+    <span class="titlebar-name">writeup — [Titre] — [Plateforme]</span>
   </div>
   <div class="body">
 
@@ -119,7 +119,7 @@ META-->
 
     <div class="section">
       <div class="section-label"># énoncé</div>
-      <div class="enonce">What is the flag?</div>
+      <div class="enonce"><span style="display:block;margin-bottom:10px;font-style:normal;color:#c9d1d9">It's mate in one. You know it, the engine knows it, my grandma knows it. The board says checkmate is one click away. The engine says no. Settle the argument.</span>What is the flag?</div>
     </div>
 
     <div class="section">
@@ -145,7 +145,7 @@ META-->
             Deux ports sont ouverts : 80 et 22, donc SSH et HTTP.<br>
             La connexion SSH est possible avec une clé publique.
             <br><br>
-            <div class="result">pas grand chose de ce côté là.</div>
+            <div class="result">RAS</div>
           </div>
         </div>
 
@@ -159,22 +159,14 @@ META-->
             <div class="codeblock"></div>
             <div class="codeblock"></div>
             <br><br>
-            On se concentre plus sur le site affiché sur le port 80.
+            On se concentre plus sur le site affiché sur le port 80.<br>
+            On découvre une partie d'échecs en cours.<br>
+            Si on met le roi noir en échecs et mat, une popup apparait 
             <br><br>
             Dans le source code, on voit le fichier js. <br>
             On voit dans la logique, que le flag est affiché sous certaines conditions.<br>
             Il faut réécrire la fonction reset pour que le flog et la balise qui l'affiche soient présents dans le html.
-            <div class="result">la solution est sur (ou dans) le code source du site</div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-header">
-            <span class="step-num">[03]</span>
-            <span class="step-title">===</span>
-          </div>
-          <div class="step-body">
-            THM{valeur_du_flag}
+            <div class="result">la solution est dans le code source du site</div>
           </div>
         </div>
 
@@ -187,7 +179,7 @@ META-->
       <div class="section-label"># flag</div>
       <div class="flag-box">
         <div class="flag-label">flag validé</div>
-        <div class="flag-value">[PLATEFORME]{valeur_du_flag}</div>
+        <div class="flag-value">THM{valeur_du_flag}</div>
       </div>
     </div>
 
