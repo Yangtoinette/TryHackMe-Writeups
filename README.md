@@ -55,10 +55,11 @@ Les contributions sont les bienvenues. Pour ajouter un guide ou améliorer un gu
 ---
 
 <!-- WRITEUPS:START -->
-<!-- Dernière mise à jour : 02/07/2026 13:50 UTC -->
+<!-- Dernière mise à jour : 05/07/2026 19:48 UTC -->
 
 | Challenge | Plateforme | Catégorie | Difficulté | Date | Points |
 |:----------|:-----------|:----------|:-----------|:-----|-------:|
+| [Fools mate](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/fools-mate.html) | TryHackMe | Challenge | Easy | juin 2026 | 45 |
 | [Cache me outside](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cache-me-outside.html) | TryHackMe | OSINT | Easy | 06 2026 | non |
 
 <!-- WRITEUPS:END -->
