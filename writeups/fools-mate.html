@@ -1,0 +1,197 @@
+<!--META
+title: Fools mate
+platform: TryHackMe
+category: Challenge
+difficulty: Easy
+date: juin 2026
+points: 45
+META-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-up — Fools mate</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #010409;
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'SF Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .step-body p {
+      margin-top:7px;
+    }
+    .window {
+      max-width: 820px; margin: 0 auto;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+    }
+    .titlebar {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .titlebar-name { font-size: 12px; color: #8b949e; margin-left: 8px; }
+    .body { padding: 22px; color: #c9d1d9; }
+    .challenge-title {
+      font-size: 20px; font-weight: 600; color: #e6edf3;
+      border-left: 2px solid #484f58; padding-left: 12px; margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 12px; color: #8b949e; padding-left: 14px;
+      margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #21262d; color: #8b949e; border: 1px solid #30363d;
+    }
+    .section { margin-bottom: 22px; }
+    .section-label {
+      font-size: 11px; color: #8b949e; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    .enonce {
+      background: #161b22; border: 1px solid #30363d;
+      border-left: 2px solid #484f58; border-radius: 0 5px 5px 0;
+      padding: 10px 14px; font-size: 13px; color: #8b949e;
+      line-height: 1.65; font-style: italic;
+    }
+    .tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tool {
+      background: #161b22; border: 1px solid #30363d;
+      color: #8b949e; padding: 4px 11px; border-radius: 4px; font-size: 12px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .step-header {
+      background: #0d1117; border-bottom: 1px solid #21262d;
+      padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .step-num  { color: #8b949e; font-size: 11px; font-weight: 600; }
+    .step-title { color: #e6edf3; font-size: 12px; }
+    .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
+    .step-body code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 3px;
+      padding: 1px 5px; font-size: 11px; color: #c9d1d9;
+    }
+    .result {
+      display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
+      background: #0d1117; border-left: 2px solid #484f58;
+      color: #c9d1d9; font-size: 11px; line-height: 1.5;
+    }
+    .result::before { content: '[→]'; font-weight: 600; flex-shrink: 0; color: #8b949e; }
+    .codeblock {
+      background: #010409; border: 1px solid #21262d; border-radius: 4px;
+      padding: 8px 12px; font-size: 11px; color: #c9d1d9;
+      margin-top: 8px; white-space: pre; overflow-x: auto;
+    }
+    .flag-box { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 14px 18px; }
+    .flag-label {
+      font-size: 11px; color: #8b949e; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .flag-value { font-size: 14px; color: #e6edf3; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <span class="titlebar-name">writeup — Fools mate — TryHackMe</span>
+  </div>
+  <div class="body">
+
+    <div class="challenge-title">Fools mate</div>
+    <div class="meta">
+      <span>TryHackMe</span>
+      <span>Challenge</span>
+      <span>juin 2026</span>
+      <span class="badge">Easy</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># énoncé</div>
+      <div class="enonce">What is the flag?</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># outils</div>
+      <div class="tools">
+        <span class="tool" title="reconnaissance">nmap</span>
+        <span class="tool" title="visualiser le site">navigateur internet</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># résolution</div>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[01]</span>
+            <span class="step-title">Reconnaissance avec nmap</span>
+          </div>
+          <div class="step-body">
+            Je regarde quels ports sont ouverts :
+            <div class="codeblock">nmap -sC -sV 10.130.150.222</div>
+            Deux ports sont ouverts : 80 et 22, donc SSH et HTTP.<br>
+            La connexion SSH est possible avec une clé publique.
+            <br><br>
+            <div class="result">pas grand chose de ce côté là.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[02]</span>
+            <span class="step-title">Visualiser le site sur le port 80.</span>
+          </div>
+          <div class="step-body">
+            On teste les outils Gobuster et Nikto, sans résultats particuliers.
+            <div class="codeblock"></div>
+            <div class="codeblock"></div>
+            <br><br>
+            On se concentre plus sur le site affiché sur le port 80.
+            <br><br>
+            Dans le source code, on voit le fichier js. <br>
+            On voit dans la logique, que le flag est affiché sous certaines conditions.<br>
+            Il faut réécrire la fonction reset pour que le flog et la balise qui l'affiche soient présents dans le html.
+            <div class="result">la solution est sur (ou dans) le code source du site</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[03]</span>
+            <span class="step-title">===</span>
+          </div>
+          <div class="step-body">
+            THM{valeur_du_flag}
+          </div>
+        </div>
+
+        
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># flag</div>
+      <div class="flag-box">
+        <div class="flag-label">flag validé</div>
+        <div class="flag-value">[PLATEFORME]{valeur_du_flag}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
