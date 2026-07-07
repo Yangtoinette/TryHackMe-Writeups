@@ -39,7 +39,7 @@ META-->
     .body { padding: 22px; color: #c9d1d9; }
     .challenge-title {
       font-size: 20px; font-weight: 600; color: #e6edf3;
-      border-left: 2px solid #484f58; padding-left: 12px; margin-bottom: 5px;
+      border-left: 2px solid #58a6ff; padding-left: 12px; margin-bottom: 5px;
     }
     .meta {
       font-size: 12px; color: #8b949e; padding-left: 14px;
@@ -48,11 +48,11 @@ META-->
     .badge {
       display: inline-block; padding: 2px 8px; border-radius: 4px;
       font-size: 10px; font-weight: 600;
-      background: #21262d; color: #8b949e; border: 1px solid #30363d;
+      background: #0d2818; color: #3fb950; border: 1px solid #2ea043;
     }
     .section { margin-bottom: 22px; }
     .section-label {
-      font-size: 11px; color: #8b949e; text-transform: uppercase;
+      font-size: 11px; color: #58a6ff; text-transform: uppercase;
       letter-spacing: 0.09em; margin-bottom: 10px;
       display: flex; align-items: center; gap: 8px;
     }
@@ -74,7 +74,7 @@ META-->
       background: #0d1117; border-bottom: 1px solid #21262d;
       padding: 8px 14px; display: flex; align-items: center; gap: 10px;
     }
-    .step-num  { color: #8b949e; font-size: 11px; font-weight: 600; }
+    .step-num  { color: #3fb950; font-size: 11px; font-weight: 600; }
     .step-title { color: #e6edf3; font-size: 12px; }
     .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
     .step-body code {
@@ -83,21 +83,22 @@ META-->
     }
     .result {
       display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
-      background: #0d1117; border-left: 2px solid #484f58;
-      color: #c9d1d9; font-size: 11px; line-height: 1.5;
+      background: #0d2818; border-left: 2px solid #2ea043;
+      color: #7ee2a8; font-size: 11px; line-height: 1.5;
     }
-    .result::before { content: '[→]'; font-weight: 600; flex-shrink: 0; color: #8b949e; }
+    .result::before { content: '[trouvé]'; font-weight: 600; flex-shrink: 0; color: #3fb950; }
     .codeblock {
       background: #010409; border: 1px solid #21262d; border-radius: 4px;
       padding: 8px 12px; font-size: 11px; color: #c9d1d9;
       margin-top: 8px; white-space: pre; overflow-x: auto;
     }
-    .flag-box { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 14px 18px; }
+    .flag-box { background: #0d2818; border: 1px solid #2ea043; border-radius: 6px; padding: 14px 18px; }
     .flag-label {
-      font-size: 11px; color: #8b949e; font-weight: 600;
+      font-size: 11px; color: #3fb950; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
     }
-    .flag-value { font-size: 14px; color: #e6edf3; font-weight: 600; }
+    .flag-label::before { content: '▸ '; }
+    .flag-value { font-size: 14px; color: #7ee2a8; font-weight: 600; }
     @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
   </style>
 </head>
