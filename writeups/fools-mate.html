@@ -142,12 +142,12 @@ META-->
           </div>
           <div class="step-body">
             Je regarde quels ports sont ouverts :
-            <div class="codeblock">nmap -sC -sV 10.130.150.222</div>
+            <div class="codeblock">nmap -sC -sV MACHINE_IP</div>
             Deux ports sont ouverts : 80 et 22, donc SSH et HTTP.<br>
             La connexion SSH est possible avec une clé publique.
             <br><br>
             On teste Gobuster, sans résultats particuliers.
-            <div class="codeblock">gobuster dir -u http://10.128.165.86 -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</div>
+            <div class="codeblock">gobuster dir -u http://MACHINE_IP -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt</div>
             <div class="result">RAS de ce côté.</div>
           </div>
         </div>
