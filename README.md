@@ -11,11 +11,11 @@
   <tr>
     <td align="center" width="220">
       <strong>🏆 Rank</strong><br/><br/>
-      <img src="https://img.shields.io/badge/3195-top%201%25-F0C040?style=for-the-badge" alt="Rank 3195 – Top 1%"/>
+      <img src="https://img.shields.io/badge/3195-top%201%25-F0C040?style=for-the-badge" alt="Rank 2974 – Top 1%"/>
     </td>
     <td align="center" width="220">
       <strong>🏅 Badges</strong><br/><br/>
-      <img src="https://img.shields.io/badge/40-badges-A87CD8?style=for-the-badge" alt="40 Badges"/>
+      <img src="https://img.shields.io/badge/40-badges-A87CD8?style=for-the-badge" alt="42 Badges"/>
     </td>
   </tr>
   <tr>
@@ -25,7 +25,7 @@
     </td>
     <td align="center" width="220">
       <strong>🚪 Completed rooms</strong><br/><br/>
-      <img src="https://img.shields.io/badge/384-rooms-5B8FD9?style=for-the-badge" alt="384 rooms complétées"/>
+      <img src="https://img.shields.io/badge/422-rooms-5B8FD9?style=for-the-badge" alt="422 rooms complétées"/>
     </td>
   </tr>
 </table>
@@ -44,7 +44,7 @@ I lost my notes about early rooms along the way, I might have to restart some.
 
 ## Informations complémentaires
 
-Ce dépôt peut également contenir des fichiers d'accompagnement pertinents pour chaque salle, tels que des scripts d'exploitation, des exemples de journaux et des résultats d'analyse. Ceux-ci se trouvent dans les répertoires respectifs des salles.
+Ce dépôt peut également contenir des fichiers d'accompagnement pertinents pour chaque room, tels que des exemples et des résultats d'analyse. Ceux-ci se trouvent dans les répertoires respectifs des rooms.
 
 Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez toujours les principes du piratage éthique ainsi que les conditions générales de la plateforme TryHackMe.
 
