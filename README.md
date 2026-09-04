@@ -57,7 +57,7 @@ Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez
 |:----------|:-----------|:----------|:-----------|:-----|-------:|
 | [Fools mate](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/fools-mate.html) | TryHackMe | Challenge | Easy | juin 2026 | 45 |
 | [Brooklyn Nine Nine](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/brooklyn-nine-nine.html) | TryHackMe | Challenge | Easy | juillet 2026 | 60 |
-| [CyberHeroes](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cyber-heroes.html) | TryHackMe | - | Easy | juillet 2026 | 30 |
-| [Cache me outside](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cache-me-outside.html) | TryHackMe | OSINT | Easy | 06 2026 | non |
+| [CyberHeroes](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cyber-heroes.html) | TryHackMe | Challenge | Easy | juillet 2026 | 30 |
+| [Cache me outside](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cache-me-outside.html) | TryHackMe | OSINT | Easy | 06 2026 | 150 |
 
 <!-- WRITEUPS:END -->
