@@ -1,0 +1,253 @@
+<!--META
+title: Missing person
+platform: TryHackMe
+category: OSINT
+difficulty: Easy
+date: septembre 2026
+points: 240
+META-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-up — Missing person</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #010409;
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'SF Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .step-body p {
+      margin-top:7px;
+    }
+    .window {
+      max-width: 820px; margin: 0 auto;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+    }
+    .titlebar {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .titlebar-name { font-size: 12px; color: #8b949e; margin-left: 8px; }
+    .body { padding: 22px; color: #c9d1d9; }
+    .challenge-title {
+      font-size: 20px; font-weight: 600; color: #e6edf3;
+      border-left: 2px solid #58a6ff; padding-left: 12px; margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 12px; color: #8b949e; padding-left: 14px;
+      margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #0d2818; color: #3fb950; border: 1px solid #2ea043;
+    }
+    .section { margin-bottom: 22px; }
+    .section-label {
+      font-size: 11px; color: #58a6ff; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    .enonce {
+      background: #161b22; border: 1px solid #30363d;
+      border-left: 2px solid #484f58; border-radius: 0 5px 5px 0;
+      padding: 10px 14px; font-size: 13px; color: #8b949e;
+      line-height: 1.65; font-style: italic;
+    }
+    .tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tool {
+      background: #161b22; border: 1px solid #30363d;
+      color: #8b949e; padding: 4px 11px; border-radius: 4px; font-size: 12px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .step-header {
+      background: #0d1117; border-bottom: 1px solid #21262d;
+      padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .step-num  { color: #3fb950; font-size: 11px; font-weight: 600; }
+    .step-title { color: #e6edf3; font-size: 12px; }
+    .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
+    .step-body code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 3px;
+      padding: 1px 5px; font-size: 11px; color: #c9d1d9;
+    }
+    .result {
+      display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
+      background: #0d2818; border-left: 2px solid #2ea043;
+      color: #7ee2a8; font-size: 11px; line-height: 1.5;
+    }
+    .result::before { content: '[trouvé]'; font-weight: 600; flex-shrink: 0; color: #3fb950; }
+    .codeblock {
+      background: #010409; border: 1px solid #21262d; border-radius: 4px;
+      padding: 8px 12px; font-size: 11px; color: #c9d1d9;
+      margin-top: 8px; white-space: pre; overflow-x: auto;
+    }
+    .flag-box { background: #0d2818; border: 1px solid #2ea043; border-radius: 6px; padding: 14px 18px; }
+    .flag-label {
+      font-size: 11px; color: #3fb950; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .flag-label::before { content: '▸ '; }
+    .flag-value { font-size: 14px; color: #7ee2a8; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <span class="titlebar-name">writeup — Missing person — TryHackMe</span>
+  </div>
+  <div class="body">
+
+    <div class="challenge-title">Missing person</div>
+    <div class="meta">
+      <span>TryHackMe</span>
+      <span>OSINT</span>
+      <span>septembre 2026</span>
+      <span class="badge">Easy</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># énoncé</div>
+      <div class="enonce">""My friend went on holiday in 2025 and shared some photos, but I haven’t heard from him since. Can you help me track him down for the police report?""</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># outils</div>
+      <div class="tools">
+        <span class="tool">Google images</span>
+        <span class="tool">exiftool</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># résolution</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[01]</span>
+            <span class="step-title">What is the commercial name of this circuit? </span>
+          </div>
+          <div class="step-body">
+            Dans la photo du circuit, nous observons un nom propre : Pertamina.<br>
+            Une simple recherche Google nous permet de trouver le nom officiel du circuit.
+            <div class="result">P******** ********* ************* ****** ******t</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[02]</span>
+            <span class="step-title">When did the event take place?</span>
+          </div>
+          <div class="step-body">
+            Dans l'énoncé, nous savons que l'année de nos recherches est 2025. Nous devons simplement trouver les dates de l'événement sur le circuit en 2025. <br>
+            Google nous aide encore une fois, et sans grande difficulté.
+            <div class="result">0*-**/**/***5</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[03]</span>
+            <span class="step-title">He told me he ate delicious Mexican food. What is the name of the restaurant?</span>
+          </div>
+          <div class="step-body">
+            En regardant la seconde photo, nous pouvons voir le nom du restaurant sur la table en bas à gauche, sur la nappe.
+            <div class="result">C*****a *******a</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[04]</span>
+            <span class="step-title">At what time was this photo taken?</span>
+          </div>
+          <div class="step-body">
+            En utilisant exiftool sur l'image, nous trouvons des coordonnées GPS : 
+            <div class="codeblock">Exif Version : 0220
+Date/Time Original : 2025:10:05 **:**:**
+Components Configuration : Y, Cb, Cr, -</div>
+            <div class="result">1*:**:*0</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[05]</span>
+            <span class="step-title">What is the full address of the bar’s location?</span>
+          </div>
+          <div class="step-body">
+            Une simple recherche sur Google "motoGP after party Pertamina" ou une variante de cette recherche nous permet de trouver des résultats intéressants.<br>
+            Une vidéo présente sur plusieurs réseaux sociaux différents annonce la soirée mentionnée dans l'énoncé.<br>
+            Sur la bio du compte ayant posté la vidéo, nous trouvons le lien Maps qui nous permet de trouver l'adresse exacte du bar.
+            <div class="result">J*. **** ****, ****, ***. *****, ********* ****** ******, **** ******** **r</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[06]</span>
+            <span class="step-title">What is the DJ's stage name? </span>
+          </div>
+          <div class="step-body">
+            Dans la vidéo trouvée pour répondre à la question précédente, nous trouvons le nom du DJ.
+            <div class="result">B*** ****h</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[07]</span>
+            <span class="step-title">What is the DJ's stage name? </span>
+          </div>
+          <div class="step-body">
+            Dans la vidéo trouvée pour répondre à la question précédente, nous trouvons le nom du DJ.
+            <div class="result">B*** ****h</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[08]</span>
+            <span class="step-title">After digging into the DJ's other online accounts, what cave does he take tourists to?</span>
+          </div>
+          <div class="step-body">
+            Pour pouvoir répondre à cette question, nous pouvons utiliser plusieurs méthodes.<br>
+            La plus simple est de chercher simplement le nom du DJ accompagné du mot "cave".<br>
+            Nous pouvons également chercher les lieux touristiques autour du bar pour tomber sur le même résultat.
+            <div class="result">G** ****r</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[09]</span>
+            <span class="step-title">What number did the DJ list for his tour business?</span>
+          </div>
+          <div class="step-body">
+            Une recherche sur le nom du DJ nous permet de tomber sur une page Facebook qui semble proposer des visites de la cave déjà trouvée.<br>
+            Le numéro de téléphone est directement visible et consitue la réponse à cette dernière question.
+            <div class="result">0**********5</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
