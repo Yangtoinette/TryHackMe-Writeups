@@ -51,11 +51,12 @@ Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez
 ---
 
 <!-- WRITEUPS:START -->
-<!-- Dernière mise à jour : 04/09/2026 12:33 UTC -->
+<!-- Dernière mise à jour : 04/09/2026 15:32 UTC -->
 
 | Challenge | Plateforme | Catégorie | Difficulté | Date | Points |
 |:----------|:-----------|:----------|:-----------|:-----|-------:|
 | [Digital Footprint](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/digital-footprint.html) | TryHackMe | OSINT | Easy | septembre 2026 | 50 |
+| [Missing person](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/missing-person.html) | TryHackMe | OSINT | Easy | septembre 2026 | 240 |
 | [Fools mate](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/fools-mate.html) | TryHackMe | Challenge | Easy | juin 2026 | 45 |
 | [Brooklyn Nine Nine](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/brooklyn-nine-nine.html) | TryHackMe | Challenge | Easy | juillet 2026 | 60 |
 | [CyberHeroes](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cyber-heroes.html) | TryHackMe | - | Easy | juillet 2026 | 30 |
