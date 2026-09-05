@@ -1,0 +1,297 @@
+<!--META
+title: KaffeeSec - SoMeSINT
+platform: TryHackMe
+category: OSINT
+difficulty: Medium
+date: septembre 2026
+points: 50
+META-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-up — KaffeeSec - SoMeSINT</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #010409;
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'SF Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .step-body p {
+      margin-top:7px;
+    }
+    .window {
+      max-width: 820px; margin: 0 auto;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+    }
+    .titlebar {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .titlebar-name { font-size: 12px; color: #8b949e; margin-left: 8px; }
+    .body { padding: 22px; color: #c9d1d9; }
+    .challenge-title {
+      font-size: 20px; font-weight: 600; color: #e6edf3;
+      border-left: 2px solid #58a6ff; padding-left: 12px; margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 12px; color: #8b949e; padding-left: 14px;
+      margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #0d2818; color: #3fb950; border: 1px solid #2ea043;
+    }
+    .section { margin-bottom: 22px; }
+    .section-label {
+      font-size: 11px; color: #58a6ff; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    .enonce {
+      background: #161b22; border: 1px solid #30363d;
+      border-left: 2px solid #484f58; border-radius: 0 5px 5px 0;
+      padding: 10px 14px; font-size: 13px; color: #8b949e;
+      line-height: 1.65; font-style: italic;
+    }
+    .tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tool {
+      background: #161b22; border: 1px solid #30363d;
+      color: #8b949e; padding: 4px 11px; border-radius: 4px; font-size: 12px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .step-header {
+      background: #0d1117; border-bottom: 1px solid #21262d;
+      padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .step-num  { color: #3fb950; font-size: 11px; font-weight: 600; }
+    .step-title { color: #e6edf3; font-size: 12px; }
+    .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
+    .step-body code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 3px;
+      padding: 1px 5px; font-size: 11px; color: #c9d1d9;
+    }
+    .result {
+      display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
+      background: #0d2818; border-left: 2px solid #2ea043;
+      color: #7ee2a8; font-size: 11px; line-height: 1.5;
+    }
+    .result::before { content: '[trouvé]'; font-weight: 600; flex-shrink: 0; color: #3fb950; }
+    .codeblock {
+      background: #010409; border: 1px solid #21262d; border-radius: 4px;
+      padding: 8px 12px; font-size: 11px; color: #c9d1d9;
+      margin-top: 8px; white-space: pre; overflow-x: auto;
+    }
+    .flag-box { background: #0d2818; border: 1px solid #2ea043; border-radius: 6px; padding: 14px 18px; }
+    .flag-label {
+      font-size: 11px; color: #3fb950; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .flag-label::before { content: '▸ '; }
+    .flag-value { font-size: 14px; color: #7ee2a8; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <span class="titlebar-name">writeup — KaffeeSec - SoMeSINT — TryHackMe</span>
+  </div>
+  <div class="body">
+
+    <div class="challenge-title">KaffeeSec - SoMeSINT</div>
+    <div class="meta">
+      <span>TryHackMe</span>
+      <span>OSINT</span>
+      <span>septembre 2026</span>
+      <span class="badge">Medium</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># énoncé</div>
+      <div class="enonce">"You are Aleks Juulut, a private eye based out of Greenland. You don't usually work digitally, but have recently discovered techniques to make that aspect of your job much easier. You were recently hired by a mysterious person under the moniker "H" to investigate a suspected cheater, named Thomas Straussman. "</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># outils</div>
+      <div class="tools">
+        <span class="tool">reddit</span>
+        <span class="tool">Google images</span>
+        <span class="tool">wayback machine</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># résolution</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[01]</span>
+            <span class="step-title">Who hired you ?</span>
+          </div>
+          <div class="step-body">
+            Who are you investigating? (ks{firstname lastname})<br>
+            Ces deux questions sont très faciles, puisque les réponses sont contenues dans le paragraphe précédent. 
+            <div class="result">* / t****s s********n</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[02]</span>
+            <span class="step-title">What is Thomas' favorite holiday?</span>
+          </div>
+          <div class="step-body">
+            Dans l'énoncé, on nous aide à restreindre les réseaux sociaux sur lequels nous devons chercher : Twitter (X) et Reddit.<br>
+            En commençant par X, nous trouvons la réponse à la question directement dans sa bio.
+            <div class="result">C*******s</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[03]</span>
+            <span class="step-title">What is Thomas' birth date?</span>
+          </div>
+          <div class="step-body">
+            Sur le profil Reddit, nous trouvons le seul post le jour de son anniversaire.<br>
+            La légende de la photo nous indique uniquement une date approximative : "il y a 6a".<br>
+            En survolant avec la souris, nous pouvons obtenir une date plus précise.<br>
+            La photo indique que Thomas a 30 ans. Nous pouvons déduire sa date de naissance grâce à ces informations.
+            <div class="result">1*-**-***0</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[04]</span>
+            <span class="step-title">What is Thomas' fiancee's Twitter handle?</span>
+          </div>
+          <div class="step-body">
+            En retournant sur la bio du profil X de Thomas, nous remarquons qu'un nom féminin est écrit avec des coeurs : Francesca.<br>
+            Il ne reste plus qu'à trouver le compte qui correspond à ce prénom.<br>
+            C'est chose faite dans les réponses du compte : un compte porte ce prénom.
+            <div class="result">@*********k</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[05]</span>
+            <span class="step-title">What is Thomas' background picture of ?</span>
+          </div>
+          <div class="step-body">
+            Aucune difficulté pour cette question, quand on a le compte sous les yeux.
+            <div class="result">B****a</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[06]</span>
+            <span class="step-title">What was the source module used to find these accounts?</span>
+          </div>
+          <div class="step-body">
+            Check the shadowban API. What is the value of "search"?
+            Il faut réaliser les étapes décrites dans la room pour pouvoir répondre à ces questions.
+            <div class="result">s**_*******s / 1*****************9</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[07]</span>
+            <span class="step-title">Where did Thomas and his fiancee vacation to?</span>
+          </div>
+          <div class="step-body">
+            When is Francesca's Mother's birthday? (without the year)
+            What is the name of their cat?<br>
+            What show does Francesca like to watch?
+            Toutes les réponses à ces questions peuvent être trouvées dans le profil et les tweets de la femme de Thomas, que nous avons trouvée dans les étapes précédentes.
+            <div class="result">K******, ******y / D******* ***h / G****k / 9* *** ******e</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[08]</span>
+            <span class="step-title">What is the name of Thomas' coworker?</span>
+          </div>
+          <div class="step-body">
+            Pour pouvoir répondre à cette partie, nous devons utiliser un outil très connu : la Wayback machine (web.archive.org) en cherchant la page du seul post Reddit de Thomas.<br>
+            Nous devons tatonner et voir toutes les versions de cette page qui ont été enregistrées dans le temps.<br>
+            Pour la version du 20 décembre 2020, nous pouvons trouver un message d'un collègue de travail.<br>
+            Grâce à son pseudo, nous pouvons trouver son nom complet.
+            <div class="result">H*** ****k</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[09]</span>
+            <span class="step-title">Where does his coworker live?</span>
+          </div>
+          <div class="step-body">
+            Une fois que nous connaissons le pseudo de son collègue, nous pouvons explorer son profil sur Reddit.<br>
+            Dans sa bio et un de ses commentaires, nous pouvons trouver la ville et le pays où il habite.
+            <div class="result">N***, ********d</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[10]</span>
+            <span class="step-title">What is the paste ID for the link we found? (flag format)</span>
+          </div>
+          <div class="step-body">
+            Nous pouvons utiliser une nouvelle fois la Wayback machine cette fois sur son profil, pour trouver plus d'informations.<br>
+            Nous tombons sur une capture du 23 mars, qui nous envoie sur une page paste.<br>
+            Nous trouvons l'ID demandé dans l'url directement (dernière partie).
+            <div class="result">w***u</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[11]</span>
+            <span class="step-title">Password for the next link? (flag format)</span>
+          </div>
+          <div class="step-body">
+            Dans la capture Wayback machine qui date de 10 février 2021, nous remarquons un nouveau post, qui est un lien pastebin.<br>
+            Dans la page qui s'ouvre, nous trouvons un autre lien pastebin, et un mot de passe, qui est la réponse à la question.
+            <div class="result">1******x</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[12]</span>
+            <span class="step-title">What is the name of Thomas' mistress?</span>
+          </div>
+          <div class="step-body">
+            What is Thomas' Email address?
+            Nous trouvons les deux réponses à ces questions en nous rendant sur le lien trouvé lors de la précédente question.<br>
+            Tout est écrit dans les deux mails envoyés et affichés sur la page internet.
+            <div class="result">E***** *****r / s*************@****.**m</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
