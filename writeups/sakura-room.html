@@ -1,0 +1,334 @@
+<!--META
+title: Sakura Room
+platform: TryHackMe
+category: OSINT
+difficulty: Easy
+date: septembre 2026
+points: 450
+META-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-up — Sakura Room</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #010409;
+      font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'SF Mono', monospace;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .step-body p {
+      margin-top:7px;
+    }
+    .window {
+      max-width: 820px; margin: 0 auto;
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+    }
+    .titlebar {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 10px 16px; display: flex; align-items: center; gap: 7px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .titlebar-name { font-size: 12px; color: #8b949e; margin-left: 8px; }
+    .body { padding: 22px; color: #c9d1d9; }
+    .challenge-title {
+      font-size: 20px; font-weight: 600; color: #e6edf3;
+      border-left: 2px solid #58a6ff; padding-left: 12px; margin-bottom: 5px;
+    }
+    .meta {
+      font-size: 12px; color: #8b949e; padding-left: 14px;
+      margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #0d2818; color: #3fb950; border: 1px solid #2ea043;
+    }
+    .section { margin-bottom: 22px; }
+    .section-label {
+      font-size: 11px; color: #58a6ff; text-transform: uppercase;
+      letter-spacing: 0.09em; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    .enonce {
+      background: #161b22; border: 1px solid #30363d;
+      border-left: 2px solid #484f58; border-radius: 0 5px 5px 0;
+      padding: 10px 14px; font-size: 13px; color: #8b949e;
+      line-height: 1.65; font-style: italic;
+    }
+    .tools { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tool {
+      background: #161b22; border: 1px solid #30363d;
+      color: #8b949e; padding: 4px 11px; border-radius: 4px; font-size: 12px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step { background: #161b22; border: 1px solid #21262d; border-radius: 6px; overflow: hidden; }
+    .step-header {
+      background: #0d1117; border-bottom: 1px solid #21262d;
+      padding: 8px 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .step-num  { color: #3fb950; font-size: 11px; font-weight: 600; }
+    .step-title { color: #e6edf3; font-size: 12px; }
+    .step-body { padding: 10px 14px; font-size: 12px; line-height: 1.65; color: #8b949e; }
+    .step-body code {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 3px;
+      padding: 1px 5px; font-size: 11px; color: #c9d1d9;
+    }
+    .result {
+      display: flex; gap: 8px; margin-top: 8px; padding: 6px 10px;
+      background: #0d2818; border-left: 2px solid #2ea043;
+      color: #7ee2a8; font-size: 11px; line-height: 1.5;
+    }
+    .result::before { content: '[trouvé]'; font-weight: 600; flex-shrink: 0; color: #3fb950; }
+    .codeblock {
+      background: #010409; border: 1px solid #21262d; border-radius: 4px;
+      padding: 8px 12px; font-size: 11px; color: #c9d1d9;
+      margin-top: 8px; white-space: pre; overflow-x: auto;
+    }
+    .flag-box { background: #0d2818; border: 1px solid #2ea043; border-radius: 6px; padding: 14px 18px; }
+    .flag-label {
+      font-size: 11px; color: #3fb950; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+    }
+    .flag-label::before { content: '▸ '; }
+    .flag-value { font-size: 14px; color: #7ee2a8; font-weight: 600; }
+    @media (max-width: 600px) { body { padding: 1rem 0.5rem; } .body { padding: 16px; } }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+    <span class="titlebar-name">writeup — Sakura Room — TryHackMe</span>
+  </div>
+  <div class="body">
+
+    <div class="challenge-title">Sakura Room</div>
+    <div class="meta">
+      <span>TryHackMe</span>
+      <span>OSINT</span>
+      <span>septembre 2026</span>
+      <span class="badge">Easy</span>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># énoncé</div>
+      <div class="enonce">""My friend went on holiday in 2025 and shared some photos, but I haven’t heard from him since. Can you help me track him down for the police report?""</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># outils</div>
+      <div class="tools">
+        <span class="tool">[Outil 1]</span>
+        <span class="tool">[Outil 2]</span>
+        <span class="tool">[Outil 3]</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"># résolution</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[01]</span>
+            <span class="step-title">Google images|indices</span>
+          </div>
+          <div class="step-body">
+            exiftool|informations
+            
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[02]</span>
+            <span class="step-title">What username does the attacker go by?</span>
+          </div>
+          <div class="step-body">
+            La photo fournie dans cette première question ne montre rien de particulier. <br>
+            Nous pouvons en déduire que les informations à trouver ne sont pas visibles directement.<br>
+            La simple utilisation de exiftool nous permet de trouver le username.
+            <div class="codeblock">Docname : pwnedletter.svg
+Export-filename : /home/S*****************o/Desktop/pwnedletter.png
+Export-xdpi : 96</div>
+            <div class="result">S*****************o</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[03]</span>
+            <span class="step-title">What is the full email address used by the attacker?</span>
+          </div>
+          <div class="step-body">
+            Selon l'énoncé, la personne que nous cherchons utilise le même pseudonyme partout.<br>
+            Avec une recherche Google, nous trouvons un profil github.<br>
+            Parmi les dépôts, nous en trouvons un qui est intéressant.<br>
+            À l'intérieur, nous trouvons une clé pgp publique, qui une fois décryptée, nous donne une adresse mail.<br>
+            Pour décrypter la clé, plusieurs méthodes sont possibles, mais ce site a été utilisé dans notre cas : https://kriztalz.sh/pgp-key-analyser.
+            <div class="result">S****************@**********.**m</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[04]</span>
+            <span class="step-title">What is the attacker's full real name ?</span>
+          </div>
+          <div class="step-body">
+            Sur le profil github, nous trouvons le prénom de notre cible.<br>
+            En le cherchant sur Google, nous obtenons un compte X (twitter) correspondant.<br>
+            Le dernier message contient un nom de profil qui est son prénom et nom complets.
+            <div class="result">A*** **e</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[05]</span>
+            <span class="step-title">What cryptocurrency does the attacker own a cryptocurrency wallet for ?</span>
+          </div>
+          <div class="step-body">
+            En nous parcourant le profil github, nous nous focalisons sur le second dépôt : ETH.<br>
+            Cela nous permet dès à présent de répondre à la première question :
+            <div class="result">E******m</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[06]</span>
+            <span class="step-title">What is the attacker's cryptocurrency wallet address?</span>
+          </div>
+          <div class="step-body">
+            Chaque dépôt sur github possède un historique que nous pouvons consulter.<br>
+            L'unique fichier du dépôt possède 2 commits.<br>
+            Dans le plus âgé, nommé "Create miningscript", nous trouvons la version initiale du fichier, avec les informations nécessaires pour répondre aux questions.<br>
+            Le modèle est le suivant
+            <div class="codeblock">stratum://ethwallet.workerid:password@miningpool:port</div>
+            Nous pouvons donc en déduire le "ethwallet", qui correspond à l'adresse du portefeuille.
+            <div class="result">0****************************************f</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[07]</span>
+            <span class="step-title">What mining pool did the attacker receive payments from on January 23, 2021 UTC?</span>
+          </div>
+          <div class="step-body">
+            Nous ne pouvons pas trouver d'informations sur des opérations crypto sans un explorateur. <br>
+            Il en existe beaucoup, et nous avons choisi d'utiliser https://www.blockchain.com.
+            Nous pouvons y chercher l'adresse pour voir les transactions.<br>
+            Dans l'historique, nous voyons les sommes reçues et envoyées par le portefeuille (wallet).<br>
+            À la date demandée, nous observons une seule réception.
+            <div class="result">E*******e</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[08]</span>
+            <span class="step-title">What other cryptocurrency did the attacker exchange with using their cryptocurrency wallet?</span>
+          </div>
+          <div class="step-body">
+            Dans l'historique, nous pouvons remarquer une autre transaction le 19/01/2021, qui concerne une autre crypto-monnaie.
+            <div class="result">T****r</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[09]</span>
+            <span class="step-title">What is the attacker's current Twitter handle?</span>
+          </div>
+          <div class="step-body">
+            Le profil twitter affiché dans l'énoncé est le même que celui que nous avons trouvé en task 3 qui nous a permis de trouver les vrais prénom et nom de notre cible.
+            <div class="result">S*************o</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[10]</span>
+            <span class="step-title">What is the BSSID for the attacker's Home WiFi?</span>
+          </div>
+          <div class="step-body">
+            Le BSSID (Basic Service Set Identifier) est une adresse unique utilisée pour identifier un point d’accès spécifique dans un réseau Wi-Fi. Il correspond généralement à l’adresse MAC (Media Access Control) de l’appareil qui diffuse le réseau.<br>
+            Le SSID est le nom convivial du réseau visible par les utilisateurs.
+            Dans les tweets du compte trouvé à la question précédente, nous en trouvons qui fait mention d'un DEEP PASTE. Après recherche sur internet, il semble que ce terme correspond à un site sur le deep web, qui permet de partager du texte.
+            En cherchant des moyons de le consulter, nous trouvons le site https://deepweblinks.net/pastebin/, qui nous indique différents liens. Nous utilisons le navigateur tor pour nous rendre sur le site.<br>
+            En cherchant le hash md5 dans la partie "recherches passées", nous trouvons une note qui contient le SSID du wifi concerné.
+            Pour faire la correspondance avec le BSSID, nous utilisons le site https://wigle.net (très utile pour les CTF OSINT).<br>
+            La recherche du SSID nous donne un seul résultat qui est le flag.
+            <div class="result">8*:**:**:**:**:*8</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[11]</span>
+            <span class="step-title">What airport is closest to the location the attacker shared a photo from prior to getting on their flight?</span>
+          </div>
+          <div class="step-body">
+            Parmi les photos postées sur le compte X, celle qui retient notre attention est celle représentant un cerisier en fleurs. Nous pourrions croire que la scène se situe au Japon, mais dans le fon de l'image, nous observons un monument américain très célèbre : le Washington Monument.<br>
+            L'aéroport le plus proche se situe à Arlington en Virginie, à environ 4 km du centre-ville.
+            <div class="result">D*A</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[12]</span>
+            <span class="step-title">What airport is closest to the location the attacker shared a photo from prior to getting on their flight?</span>
+          </div>
+          <div class="step-body">
+            L'autre photo du compte nous montre un lounge d'aéroport, avec différents noms (Skytrax, Jal, Sakura).<br>
+            Grâce à une recherche d'image inversée, nous trouvons plusieurs aéroports possibles.<br>
+            Un seul revient souvent dans les résultats, avec une correspondance visuelle exacte.<br>
+            Une fois le nom de l'aéroport trouvé, il nous reste à trouver ses initiales.<br>
+            Le titre d'un article de https://everybodyhatesatourist.net nous permets de trouver directement le flag.
+            <div class="result">H*D</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[13]</span>
+            <span class="step-title">What lake can be seen in the map shared by the attacker as they were on their final flight home?</span>
+          </div>
+          <div class="step-body">
+            L'aéroport de la réponse précédente se situant au Japon, et le criminel voyageant sur une compagnie aérienne japonaise, nous pouvons commencer nos recherches par ce pays.<br>
+            En parcourant une carte géographique du Japon, nous pouvons trouver l'île située à gauche qui présente une forme particulière : Sado.<br>
+            En nous repérant facilement sur la carte, nous trouvons le nom du lac.
+            <div class="result">Lake I********o</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-header">
+            <span class="step-num">[14]</span>
+            <span class="step-title">What city does the attacker likely consider "home"?</span>
+          </div>
+          <div class="step-body">
+            Parmi les informations que nous avons trouvées sur le deep web, il y avait les différents BSSID connus par le criminel. Dans cette liste, une ville japonaise est présente.<br>
+            Nous pouvons le confirmer en cherchant les autres BSSID de la liste, qui nous mènent tous au même endroit.
+            <div class="result">H******I</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
