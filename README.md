@@ -51,13 +51,14 @@ Toutes les solutions sont fournies à des fins éducatives uniquement. Respectez
 ---
 
 <!-- WRITEUPS:START -->
-<!-- Dernière mise à jour : 05/09/2026 20:45 UTC -->
+<!-- Dernière mise à jour : 08/10/2026 10:00 UTC -->
 
 | Challenge | Plateforme | Catégorie | Difficulté | Date | Points |
 |:----------|:-----------|:----------|:-----------|:-----|-------:|
 | [Digital Footprint](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/digital-footprint.html) | TryHackMe | OSINT | Easy | septembre 2026 | 120 |
 | [KaffeeSec - SoMeSINT](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/kaffeesec-somesint.html) | TryHackMe | OSINT | Medium | septembre 2026 | 50 |
 | [Missing person](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/missing-person.html) | TryHackMe | OSINT | Easy | septembre 2026 | 240 |
+| [Sakura Room](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/sakura-room.html) | TryHackMe | OSINT | Easy | septembre 2026 | 450 |
 | [Fools mate](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/fools-mate.html) | TryHackMe | Challenge | Easy | juin 2026 | 45 |
 | [Brooklyn Nine Nine](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/brooklyn-nine-nine.html) | TryHackMe | Challenge | Easy | juillet 2026 | 60 |
 | [CyberHeroes](https://Yangtoinette.github.io/TryHackMe-Writeups/writeups/cyber-heroes.html) | TryHackMe | - | Easy | juillet 2026 | 30 |
